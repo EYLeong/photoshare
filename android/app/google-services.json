@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1005462833931",
+    "firebase_url": "https://photoes-1593687049844.firebaseio.com",
+    "project_id": "photoes-1593687049844",
+    "storage_bucket": "photoes-1593687049844.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005462833931:android:bf9274ef8cecf98f6e700e",
+        "android_client_info": {
+          "package_name": "com.example.PhotoES"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1005462833931-ua5q2r7d38jr0q3epl1lv7q7cj75no87.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.PhotoES",
+            "certificate_hash": "5af73373fd53de0622ef8fd4224ebd45f326ac10"
+          }
+        },
+        {
+          "client_id": "1005462833931-159ta6datrcnbv3mlfttht0d34on1jnk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw9Ue74LKjbO2NR_ylWi2ucreM0QG1xwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1005462833931-159ta6datrcnbv3mlfttht0d34on1jnk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
