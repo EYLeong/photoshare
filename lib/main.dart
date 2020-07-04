@@ -20,32 +20,57 @@ class HomeScreenWidget extends StatelessWidget {
         title: Text("Hello World!"),
         centerTitle: true,
       ),
-      body: CounterWidget(),
+      body: GoogleSignInWidget(),
     );
   }
 }
 
-class CounterWidget extends StatefulWidget {
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  scopes: <String>[
+    'email',
+  ],
+);
+
+class GoogleSignInWidget extends StatefulWidget {
   @override
-  _CounterWidgetState createState() => _CounterWidgetState();
+  _GoogleSignInWidgetState createState() => _GoogleSignInWidgetState();
 }
 
-class _CounterWidgetState extends State<CounterWidget> {
-  int _count = 0;
+class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
+  GoogleSignInAccount _currentUser;
 
-  void _incrementCount() {
-    setState(() {
-      _count++;
+  Future<void> _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> _handleSignOut() => _googleSignIn.disconnect();
+
+  @override
+  void initState() {
+    super.initState();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+      setState(() {
+        _currentUser = account;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Text('$_count'),
-        RaisedButton(onPressed: _incrementCount),
-      ],
-    );
+    if (_currentUser == null) {
+      return RaisedButton(
+        onPressed: _handleSignIn,
+        child: Text("Sign in"),
+      );
+    } else {
+      return RaisedButton(
+        onPressed: _handleSignOut,
+        child: Text("Sign Out"),
+      );
+    }
   }
 }
