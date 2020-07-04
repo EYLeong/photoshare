@@ -46,8 +46,6 @@ class PhotoClient {
 
     var json = jsonDecode(response.body);
     var albums = json["albums"] as Iterable;
-    print(json);
-
     return albums.map((data) => Album.fromJson(data)).toList();
   }
 
@@ -63,7 +61,6 @@ class PhotoClient {
 
     var json = jsonDecode(response.body);
     var mediaItems = json["mediaItems"] as Iterable;
-
     return mediaItems.map((json) => Photo.fromJson(json)).toList();
   }
 }

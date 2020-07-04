@@ -52,17 +52,20 @@ class _LoginPageState extends State<LoginPage> {
             );
           // User is logged in
           } else {
-            return _album(state);
+            if (MediaQuery.of(context).orientation == Orientation.portrait) {
+              return _albumGrid(state);
+              // return _albumList(state);
+            } else {
+              return _albumGrid(state);
+            }
           }
         },
       ),
     );
   }
 
-  Widget _album(Utility state) {
-    // return Text(state.user.displayName);
-    
-    // Display the albums in a list format
+  // Display the albums in a list format
+  Widget _albumList(Utility state) {
     return SafeArea(
       child: ListView.builder(
         itemCount: state.albums.length,
@@ -87,7 +90,67 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  // Display the albums in a gridview format
+  Widget _albumGrid(Utility state) {
+    return SafeArea(
+      child: GridView.builder(
+        itemCount: state.albums.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,), 
+        itemBuilder: (context, idx) {
+          return InkWell (
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => ChangeNotifierProvider.value(
+                  value: state,
+                  child: PhotosPage(id: state.albums[idx].id),
+                ),
+              ));
+            },
+            child: Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              color: Colors.lightBlueAccent,
+              child: Column( 
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+
+                  Container(
+                    child: Image.network(
+                      "${state.albums[idx].coverPhotoBaseUrl}=w200-h150-c", 
+                      fit: BoxFit.fitWidth,),
+                  ),
+
+                  Expanded(
+                    child: Center(
+                      child: Column(
+                        children: <Widget> [
+                          SizedBox(height: 8.0),
+                          Text(
+                            state.albums[idx].title,
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold
+                            ),),
+                        ]
+                      ),
+                    ),
+                  ),
+
+                ],
+              ),
+              elevation: 3.0,
+              margin: EdgeInsets.all(5.0),
+            ),
+          );
+        }
+      )
+    );
+  }
+  
 }
+
+
 
 class PhotosPage extends StatefulWidget {
   final String id;

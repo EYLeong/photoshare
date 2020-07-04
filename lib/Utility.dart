@@ -35,6 +35,7 @@ class Utility extends ChangeNotifier {
     _user = await _signIn.signIn();
 
     if (_user != null) {
+      // authHeaders, containing the current `authentication.accessToken`
       _client = PhotoClient(_user.authHeaders);
       await _updateAlbums();
     } else {
