@@ -27,7 +27,8 @@ class HomeScreenWidget extends StatelessWidget {
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   scopes: <String>[
-    'email',
+    'https://www.googleapis.com/auth/photoslibrary',
+    'https://www.googleapis.com/auth/photoslibrary.sharing',
   ],
 );
 
@@ -57,6 +58,7 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
         _currentUser = account;
       });
     });
+    _googleSignIn.signInSilently();
   }
 
   @override
@@ -67,9 +69,14 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
         child: Text("Sign in"),
       );
     } else {
-      return RaisedButton(
-        onPressed: _handleSignOut,
-        child: Text("Sign Out"),
+      return Column(
+        children: <Widget>[
+          Text("Signed in as ${_currentUser.displayName}"),
+          RaisedButton(
+            onPressed: _handleSignOut,
+            child: Text("Sign Out"),
+          )
+        ],
       );
     }
   }
