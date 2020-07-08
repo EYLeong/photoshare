@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:photoshare/photosApi/photosApi.dart' as api;
 
 void main() => runApp(MyApp());
 
@@ -72,6 +73,9 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
       return Column(
         children: <Widget>[
           Text("Signed in as ${_currentUser.displayName}"),
+          RaisedButton(
+            onPressed: () => api.listAlbums(_currentUser.authHeaders),
+          ),
           RaisedButton(
             onPressed: _handleSignOut,
             child: Text("Sign Out"),
