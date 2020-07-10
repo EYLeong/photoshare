@@ -2,30 +2,91 @@ import 'package:PhotoES/PhotoClient.dart';
 import 'package:PhotoES/Utility.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
 
 void main() {
   runApp(MyApp());
 }
 
+// class MyApp extends StatelessWidget {
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//         primarySwatch: Colors.yellow,
+//         visualDensity: VisualDensity.adaptivePlatformDensity,
+//       ),
+      
+//       // Log into the application
+//       home: ChangeNotifierProvider(
+//         create: (_) => Utility(),
+//         child: LoginPage(),
+//       ),
+//     );
+//   }
+// }
+
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.yellow,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      
-      // Log into the application
-      home: ChangeNotifierProvider(
+      home: SplashScreen(),
+      );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return StartState();
+  }
+}
+
+
+class StartState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  startTimer() async {
+    var duration = Duration(seconds: 5);
+    return Timer(duration, route);
+  }
+
+  route() {
+    Navigator.pushReplacement(context, MaterialPageRoute(
+      builder: (context) => ChangeNotifierProvider(
         create: (_) => Utility(),
         child: LoginPage(),
+      ),
+    ));
+  } 
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: 250,
+              width: 250,
+              child: Image.asset("assets/PhotoES.gif"),
+            )
+          ]
+        ),
       ),
     );
   }
 }
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -108,14 +169,14 @@ class _LoginPageState extends State<LoginPage> {
               ));
             },
             child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
               color: Colors.lightBlueAccent,
               child: Column( 
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
 
-                  Container(
+                  ClipRRect(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(5.0)),
                     child: Image.network(
                       "${state.albums[idx].coverPhotoBaseUrl}=w200-h150-c", 
                       fit: BoxFit.fitWidth,),
