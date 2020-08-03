@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:photoshare/photosApi/photosApi.dart' as api;
+import 'package:image_picker/image_picker.dart';
+import 'package:photoshare/drive_api/drive_api.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,8 +31,9 @@ class HomeScreenWidget extends StatelessWidget {
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   scopes: <String>[
-    'https://www.googleapis.com/auth/photoslibrary',
-    'https://www.googleapis.com/auth/photoslibrary.sharing',
+    'https://www.googleapis.com/auth/drive.appdata',
+    'https://www.googleapis.com/auth/drive.file',
+    'https://www.googleapis.com/auth/drive.install'
   ],
 );
 
@@ -40,6 +44,8 @@ class GoogleSignInWidget extends StatefulWidget {
 
 class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
   GoogleSignInAccount _currentUser;
+  File _image;
+  final picker = ImagePicker();
 
   Future<void> _handleSignIn() async {
     try {
@@ -50,6 +56,14 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
   }
 
   Future<void> _handleSignOut() => _googleSignIn.disconnect();
+
+  Future<void> _getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(pickedFile.path);
+    });
+    uploadFile(_image, _currentUser.authHeaders);
+  }
 
   @override
   void initState() {
@@ -74,12 +88,22 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
         children: <Widget>[
           Text("Signed in as ${_currentUser.displayName}"),
           RaisedButton(
-            onPressed: () => api.listAlbums(_currentUser.authHeaders),
+            child: Text("Pick Image"),
+            onPressed: _getImage,
           ),
           RaisedButton(
             onPressed: _handleSignOut,
             child: Text("Sign Out"),
-          )
+          ),
+          _image == null ? Text("No Image Selected") : Image.file(_image),
+          RaisedButton(
+            onPressed: () => listFiles(_currentUser.authHeaders),
+            child: Text("List Files"),
+          ),
+          RaisedButton(
+            onPressed: () => createFolder("test", _currentUser.authHeaders),
+            child: Text("Create Folder"),
+          ),
         ],
       );
     }
