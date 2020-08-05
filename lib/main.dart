@@ -101,7 +101,8 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
             child: Text("List Files"),
           ),
           RaisedButton(
-            onPressed: () => createFolder("test", _currentUser.authHeaders),
+            onPressed: () =>
+                createFolder("testName", "testDesc", _currentUser.authHeaders),
             child: Text("Create Folder"),
           ),
         ],

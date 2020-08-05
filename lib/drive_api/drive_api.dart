@@ -19,12 +19,13 @@ Future<void> listFiles(Future<Map<String, String>> authHeaders) async {
   print(response.body);
 }
 
-Future<void> createFolder(
-    String name, Future<Map<String, String>> authHeaders) async {
+Future<void> createFolder(String name, String description,
+    Future<Map<String, String>> authHeaders) async {
   final url = 'https://www.googleapis.com/drive/v3/files';
   final reqBody = {
     'name': name,
-    'mimeType': 'application/vnd.google-apps.folder'
+    'mimeType': 'application/vnd.google-apps.folder',
+    'description': description
   };
   final reqBodyJson = jsonEncode(reqBody);
   var headers = await authHeaders;
